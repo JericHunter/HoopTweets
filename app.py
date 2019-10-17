@@ -42,3 +42,6 @@ def player():
     print(messages)
     """Return homepage."""
     return render_template('player.html', q=q, tweets=tweets, messages=messages)
+    
+if __name__ == '__main__':
+    app.run(debug=True)
