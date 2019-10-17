@@ -5,22 +5,20 @@
             <meta charset="utf-8">
             <title> Hoop Tweets </title>
             <link rel="stylesheet" href="{{ url_for('static', filename="style.css")}}">
-
-    </head>
+            
 
     <body>
 
             <h1> HoopTweets </h1>
 
             <!-- form at the top -->
-            <form action="/player">
+            <form action="/player" method="GET">
                 Player Name: <br>
                 <input class="searchbar" type="text" name="q" placeholder="Search Players..">
 
                 <input class="submitbutton" type="submit" value=" Enter ">
             </form>
             {% block content %} {% endblock %}
-
 
     </body>
 

@@ -15,6 +15,10 @@ def home():
 
 @app.route('/player')
 def player():
+    player_query = request.args.get("q", None)
+    if not player_query:
+        return f"Couldn't find tweets for {player_query}"
+
     auth_params = {
         'app_key':'rCguhoSNkQGrj2WfowC0iI4rj',
         'app_secret':'nMU6MarVejiIpTPCx7aYrHwuiawbRywh13lXhXOuymbz77BieZ',
@@ -23,18 +27,18 @@ def player():
     }
 
     # Creating an OAuth Client connection
-    auth = OAuth1 (
+    auth = OAuth1(
         auth_params['app_key'],
         auth_params['app_secret'],
         auth_params['oauth_token'],
         auth_params['oauth_token_secret']
     )
 
-    q = 'lebron -filter:retweets AND -filter:replies'
+    q = f'{player_query} -filter:retweets AND -filter:replies'
     # url according to twitter API
     url_rest = "https://api.twitter.com/1.1/search/tweets.json"
 
-    params = {'q': q, 'count': 5, 'lang': 'en',  'result_type': 'recent'}
+    params = {'q': q, 'count': 1, 'lang': 'en',  'result_type': 'recent'}
     results = requests.get(url_rest, params=params, auth=auth)
     tweets = results.json()
 
@@ -42,6 +46,6 @@ def player():
     print(messages)
     """Return homepage."""
     return render_template('player.html', q=q, tweets=tweets, messages=messages)
-    
+
 if __name__ == '__main__':
     app.run(debug=True)
