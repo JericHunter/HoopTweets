@@ -1,10 +1,44 @@
 from flask import Flask, render_template, request
 import requests
 import json
+import bs4
+from bs4 import BeautifulSoup
+from requests_oauthlib import OAuth1
 
 app = Flask(__name__)
 
+
 @app.route('/')
-def index():
+def home():
+    return render_template("base.html")
+
+
+@app.route('/player')
+def player():
+    auth_params = {
+        'app_key':'rCguhoSNkQGrj2WfowC0iI4rj',
+        'app_secret':'nMU6MarVejiIpTPCx7aYrHwuiawbRywh13lXhXOuymbz77BieZ',
+        'oauth_token':'992987135723687936-bJDIDdI8frBErPbyx6V9rYuneWtm3CX',
+        'oauth_token_secret':'tkYmrFRQJFWYpS33AzAighKPIjTin4UJCOEcWRWeLvH2G'
+    }
+
+    # Creating an OAuth Client connection
+    auth = OAuth1 (
+        auth_params['app_key'],
+        auth_params['app_secret'],
+        auth_params['oauth_token'],
+        auth_params['oauth_token_secret']
+    )
+
+    q = 'lebron -filter:retweets AND -filter:replies'
+    # url according to twitter API
+    url_rest = "https://api.twitter.com/1.1/search/tweets.json"
+
+    params = {'q': q, 'count': 5, 'lang': 'en',  'result_type': 'recent'}
+    results = requests.get(url_rest, params=params, auth=auth)
+    tweets = results.json()
+
+    messages = [BeautifulSoup(tweet['text'], 'html5lib').get_text() for tweet in tweets['statuses']]
+    print(messages)
     """Return homepage."""
-    return render_template('index.html')
+    return render_template('player.html', q=q, tweets=tweets, messages=messages)

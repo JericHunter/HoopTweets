@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- looping over API tree to get tweet  -->
+{% for tweet in tweets["statuses"] %}
+   <p> {{ tweet["text"] }} </p>
+
+{% endfor %}
+
+{% endblock %}
