@@ -38,7 +38,7 @@ def player():
     # url according to twitter API
     url_rest = "https://api.twitter.com/1.1/search/tweets.json"
 
-    params = {'q': q, 'count': 1, 'lang': 'en',  'result_type': 'recent'}
+    params = {'q': q, 'count': 8, 'lang': 'en',  'result_type': 'recent'}
     results = requests.get(url_rest, params=params, auth=auth)
     tweets = results.json()
 
